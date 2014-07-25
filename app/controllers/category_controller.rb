@@ -1,5 +1,7 @@
 class CategoryController < ApplicationController
 
+  before_action :require_user
+
   def show
     @category = Category.find(params[:id])
   end
