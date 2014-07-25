@@ -1,10 +1,10 @@
 %section.genre
   %header.clearfix
     %h1 
-      ="Showing reults for: #{@search_prase}"
+      ="Showing reults for: #{@search_phrase}"
   %article.row
-    - if @search.count > 0
-      - @search.each do |vid|
+    - if @search_result.present?
+      - @search_result.each do |vid|
         .video.col-md-2
           = link_to video_path(vid), nil  do 
             %img(src="#{vid.small_cover_url}")

@@ -9,11 +9,6 @@ describe Category do
     dramma = Category.create(name: 'Drama')
     let!(:vid1) { Video.create(title: 'Family Guy', description: 'a funny show', created_at: 7.days.ago, category: comedy) }
     let!(:vid2) { Video.create(title: 'Futurama', description: 'a funny show', created_at: 6.days.ago, category: comedy) }
-    #let!(:vid3) { Video.create(title: 'Monk', description: 'a funny show', created_at: 5.days.ago, category: comedy) }
-    #let!(:vid4) { Video.create(title: 'House', description: 'a funny show', created_at: 4.days.ago, category: comedy) }
-    #let!(:vid5) { Video.create(title: 'Louie C.K.', description: 'a funny show', created_at: 3.days.ago, category: comedy) }
-    #let!(:vid6) { Video.create(title: 'Park and Reck', description: 'a funny show', created_at: 2.days.ago, category: comedy) }
-    #let!(:vid7) { Video.create(title: 'Portlandia', description: 'a funny show', created_at: 1.day.ago, category: comedy) }
 
     it "returns the videos in reverse cronological order by created at" do
       expect(comedy.recent_videos).to eq([vid2,vid1])
