@@ -5,30 +5,30 @@ describe VideosController do
   let(:video) {Fabricate(:video)}
   
   describe "GET show" do
-    it "sets the requested video to @video" do
-      session[:user_id] = user.id
-      get :show, id: video.id
-      expect(assigns(:video)).to eq(video)
+    context "with authenticated users" do
+      before do
+        session[:user_id] = user.id
+      end
+
+      it "sets the requested video to @video" do
+        get :show, id: video.id
+        expect(assigns(:video)).to eq(video)
+      end
     end
 
-    it "renders the show template if the user is logged in" do
-      session[:user_id] = user.id
-      get :show, id: video.id
-      expect(response).to render_template :show
-    end
-
-    it "redirects to the site root if the user is not logged in" do
-      session[:user_id] = nil
-      get :show, id: video.id
-      expect(response).to redirect_to root_path
+    context "with unauthenticated users" do
+      it "redirects to the login page if the user is not logged in" do
+        get :show, id: video.id
+        expect(response).to redirect_to sessions_new_path
+      end
     end
   end
 
   describe "GET search" do
-    it "redirects the use the site root if the use is not logged in" do
+    it "redirects the use the login page if the use is not logged in" do
       session[:user_id] = nil
       get :search, search_term: 'breaking'
-      expect(response).to redirect_to root_path
+      expect(response).to redirect_to sessions_new_path
     end
 
     it "sets the @search_phrase to the text being searched for if logged in" do
@@ -38,7 +38,7 @@ describe VideosController do
     end
 
     it "sets the @search_result to the videos returned by the search if logged in" do
-      vid1 = Video.create(title: "breaking bad", description: "A good show.")
+      vid1 = Fabricate(:video, title:'breaking bad')
       session[:user_id] = user.id
       get :search, search_term: 'breaking'
       expect(assigns(:search_result)).to eq([vid1])
