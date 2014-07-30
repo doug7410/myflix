@@ -11,8 +11,11 @@ class Video < ActiveRecord::Base
       Video.where('title LIKE ?', "%#{search_term}%").order("created_at DESC")
     end
   end
-
   
+  def average_rating
+    ratings = self.reviews.map(&:rating)
+    (ratings.sum.to_f / ratings.size).round(2) if ratings.any?
+  end 
 end
 
 

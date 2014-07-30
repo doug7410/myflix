@@ -5,6 +5,5 @@ class Review < ActiveRecord::Base
 
   validates_presence_of :body, :rating
 
-  def average_rating
-  end
+  
 end

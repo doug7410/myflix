@@ -7,7 +7,10 @@
         %header
           %h3 
             = @video.title
-          %span Rating: 4.5/5.0
+          - if @video.reviews.any?  
+            %span Rating: #{@video.average_rating}/5.0
+          - else
+            %span Rating: N/A  
         %p 
           = @video.description
         .actions
