@@ -14,6 +14,13 @@ describe VideosController do
         get :show, id: video.id
         expect(assigns(:video)).to eq(video)
       end
+
+      it "sets the @reviews that belong to the video" do
+        review1 = Fabricate(:review, video: video)
+        review2 = Fabricate(:review, video: video)
+        get :show, id: video.id
+        expect(assigns(:reviews)).to match_array([review1, review2]) 
+      end
     end
 
     context "with unauthenticated users" do
