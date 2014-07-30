@@ -18,12 +18,11 @@ describe UsersController do
   describe "POST create" do
     context "input is valid" do
       before do
-        post :create, user: {email: "bob@bob.com", password: "password", full_name: "bob bob"}
+        post :create, user: Fabricate.attributes_for(:user)
       end
       
       it "creates the new @user" do
-        expect(User.first.email).to eq("bob@bob.com")
-        expect(User.first.full_name).to eq("bob bob")
+        expect(User.count).to eq(1)
       end
 
       it "creates a notice if the user has been saved" do 
@@ -38,6 +37,7 @@ describe UsersController do
     context "input is invalid" do
       it "renders the new user template if validation fails" do
         post :create, user: {email: "bob@bob.com", password: ""}
+        expect(User.count).to eq(0)
         expect(response).to render_template :new
       end
     end
