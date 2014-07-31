@@ -25,7 +25,7 @@
           .form-group
             .row
               .col-sm-3
-                =f.select( :rating, [['1 Star', 1], ['2 Stars', 2], ['3 Stars', 3], ['4 Stars', 4],['5 Stars', 5]], label: 'Rate this video')
+                =f.select :rating, options_for_select([5,4,3,2,1].map {|number| [pluralize(number, "Star")]}), label: 'Rate this video'
           .form-group
             .row
               .col-sm-8

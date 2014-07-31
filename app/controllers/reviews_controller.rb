@@ -1,6 +1,6 @@
 class ReviewsController < ApplicationController
 
-  before_action :require_user
+  before_filter :require_user
 
   def create
     @video = Video.find(params[:video_id])
@@ -11,7 +11,7 @@ class ReviewsController < ApplicationController
       flash[:success] = "Your review has been added."
       redirect_to video_path(@video)
     else
-      @reviews = @video.reviews.all
+      @reviews = @video.reviews.reload
       render 'videos/show'
     end 
   end
