@@ -21,6 +21,11 @@ describe VideosController do
         get :show, id: video.id
         expect(assigns(:reviews)).to match_array([review1, review2]) 
       end
+
+      it "sets @review to a blank review" do
+        get :show, id: video.id
+        expect(assigns(:review)).to be_new_record
+      end
     end
 
     context "with unauthenticated users" do

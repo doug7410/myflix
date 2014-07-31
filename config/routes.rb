@@ -13,9 +13,9 @@ Myflix::Application.routes.draw do
       get 'search', to: 'videos#search'
     end
 
-    member do
-      resources :video_reviews, only: [:create]
-    end 
+    
+      resources :reviews, only: [:create]
+    
   end
 
   resources :category

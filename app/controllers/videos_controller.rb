@@ -5,6 +5,7 @@ class VideosController < ApplicationController
   def show
     @video = Video.find(params[:id])
     @reviews = @video.reviews.all
+    @review = Review.new
   end
 
   def search
