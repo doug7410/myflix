@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
   def new
+    redirect_to home_path if logged_in?
     @user = User.new
   end
 
@@ -8,8 +9,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      flash[:notice] = "You were registered."
-      session[:user_id] = @user.id
+      flash[:success] = "You were registered."
       redirect_to sessions_new_path
     else
       render :new
