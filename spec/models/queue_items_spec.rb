@@ -40,7 +40,7 @@ describe QueueItem do
     end
   end
 
-  describe "category" do
+  describe "#category" do
     it "returns the category object of the video" do
       category = Fabricate(:category)
       video = Fabricate(:video, category: category)
