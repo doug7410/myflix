@@ -29,16 +29,12 @@ describe QueueItemsController do
           post :create, video_id: video.id
         end
 
-        it "creates the queue_item" do
-          expect(assigns(:queue_item)).not_to be_nil
-        end
-
         it "associates the queue_item with the video" do
-          expect(assigns(:queue_item).video).to eq(video)
+          expect(QueueItem.first.video).to eq(video)
         end
 
         it "associates the queue item with the user" do
-          expect(assigns(:queue_item).user).to eq(user)
+          expect(QueueItem.first.user).to eq(user)
         end
 
         it "saves the queue item" do
@@ -55,24 +51,19 @@ describe QueueItemsController do
           session[:user_id] = user.id
           queue_item = Fabricate(:queue_item, user: user, video: video)
           post :create, video_id: video.id
-          expect(response).to redirect_to video
-        end
-
-        it "sets the message" do
-          session[:user_id] = user.id
-          queue_item = Fabricate(:queue_item, user: user, video: video)
-          post :create, video_id: video.id
-          expect(flash[:warning]).not_to be_blank
+          expect(user.queue_items.count).to eq(1)
         end
       end
 
       context "user has items in queue" do
         it "add the queue item to the end of the queue" do
-          session[:user_id] = user.id
-          Fabricate(:queue_item, video: video, user: user)
-          video2 = Fabricate(:video)
-          post :create, video_id: video2.id
-          expect(assigns(:queue_item).list_order).to eq(2)
+          doug = Fabricate(:user)
+          session[:user_id] = doug.id
+          Fabricate(:queue_item, video: video, user: doug)
+          mad_men = Fabricate(:video)
+          post :create, video_id: mad_men.id
+          mad_men_queue_item = QueueItem.where(video_id: mad_men.id, user_id: doug.id).first
+          expect(mad_men_queue_item.list_order).to eq(2)
         end
       end
     end

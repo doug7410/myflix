@@ -7,11 +7,12 @@ Myflix::Application.routes.draw do
     end
 
     resources :reviews, only: [:create]
-    resources :queue_items, only: [:create]
   end
 
   resources :category
   resources :users, only: [:create]
+  resources :queue_items, only: [:create]
+
   
   get '/home', to: 'home#index'
   get '/register', to: 'users#new'
