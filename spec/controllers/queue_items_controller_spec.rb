@@ -76,5 +76,52 @@ describe QueueItemsController do
         expect(response).to redirect_to sessions_new_path
       end
     end
+  end
+
+  describe "POST destroy" do
+    context "the user is logged in" do
+      let!(:user) { Fabricate(:user) }
+
+      before do
+        session[:user_id] = user.id
+      end
+      it "redirects to the my queue page if the use is logged in" do
+        queue_item = Fabricate(:queue_item)
+        post :destroy, id: queue_item.id
+        expect(response).to redirect_to my_queue_path
+      end
+
+      it "deletes the queue item" do
+        queue_item = Fabricate(:queue_item, user: user)
+        post :destroy, id: queue_item.id
+        expect(user.queue_items.count).to eq(0)
+      end
+
+      it "does not delete the queue item if the queue item is not in the users queue" do
+        queue_item1 = Fabricate(:queue_item, user: user)
+        doug = Fabricate(:user)
+        queue_item2 = Fabricate(:queue_item, user_id: doug.id)
+        post :destroy, id: queue_item2.id
+        expect(QueueItem.count).to eq(2)
+      end
+
+      it "re-orders all the other queue items" do
+        queue_item1 = Fabricate(:queue_item, user: user, list_order: 1)
+        queue_item2 = Fabricate(:queue_item, user: user, list_order: 2)
+        queue_item3 = Fabricate(:queue_item, user: user, list_order: 3)
+        post :destroy, id: queue_item1.id
+        expect(user.queue_items.first.list_order).to eq(1)
+        expect(user.queue_items.last.list_order).to eq(2)
+      end
+    end
+
+    context "the user is not logged in" do
+      it "redirects to login page if the user is not logged in" do
+        session[:user_id] = nil
+        queue_item = Fabricate(:queue_item)
+        post :destroy, id: queue_item.id
+        expect(response).to redirect_to sessions_new_path
+      end
+    end
   end     
 end

@@ -11,7 +11,7 @@ Myflix::Application.routes.draw do
 
   resources :category
   resources :users, only: [:create]
-  resources :queue_items, only: [:create]
+  resources :queue_items, only: [:create, :destroy]
 
   
   get '/home', to: 'home#index'
