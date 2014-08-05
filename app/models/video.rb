@@ -14,8 +14,7 @@ class Video < ActiveRecord::Base
   end
   
   def average_rating
-    average_rating = reviews.average(:rating).round(2) if reviews.average(:rating)
-    average_rating
+    reviews.average(:rating).round(2) if reviews.average(:rating)
   end 
 end
 

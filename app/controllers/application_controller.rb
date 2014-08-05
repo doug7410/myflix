@@ -17,9 +17,4 @@ class ApplicationController < ActionController::Base
       redirect_to sessions_new_path
     end
   end
-
-  def video_is_in_queue?(video)
-    true if current_user.queue_items.where(video: video).present?
-  end
-
 end

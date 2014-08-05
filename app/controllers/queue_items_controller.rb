@@ -7,7 +7,7 @@ class QueueItemsController < ApplicationController
 
   def create
     video = Video.find(params[:video_id])
-    add_queue_item!(video)
+    current_user.add_queue_item!(video)
     redirect_to my_queue_path
   end
 
@@ -15,8 +15,7 @@ class QueueItemsController < ApplicationController
     queue_item = QueueItem.find(params[:id])
     queue_item.destroy if current_user.queue_items.include?(queue_item)
     current_user.queue_items.each_with_index do |item, index|
-      item.list_order = index + 1
-      item.save
+      item.update(list_order: index + 1)
     end
 
     redirect_to my_queue_path
@@ -24,15 +23,5 @@ class QueueItemsController < ApplicationController
 
   private
 
-  def add_queue_item!(video)
-    QueueItem.create(video: video, user: current_user, list_order: list_order) unless current_user_queued_video?(video)
-  end
-
-  def list_order 
-    current_user.queue_items.size + 1
-  end
-
-  def current_user_queued_video?(video)
-    current_user.queue_items.where(video: video).present?
-  end
+  
 end

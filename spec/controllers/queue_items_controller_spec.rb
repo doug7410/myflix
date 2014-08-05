@@ -80,7 +80,7 @@ describe QueueItemsController do
 
   describe "POST destroy" do
     context "the user is logged in" do
-      let!(:user) { Fabricate(:user) }
+      let(:user) { Fabricate(:user) }
 
       before do
         session[:user_id] = user.id
@@ -109,9 +109,11 @@ describe QueueItemsController do
         queue_item1 = Fabricate(:queue_item, user: user, list_order: 1)
         queue_item2 = Fabricate(:queue_item, user: user, list_order: 2)
         queue_item3 = Fabricate(:queue_item, user: user, list_order: 3)
-        post :destroy, id: queue_item1.id
-        expect(user.queue_items.first.list_order).to eq(1)
-        expect(user.queue_items.last.list_order).to eq(2)
+        queue_item4 = Fabricate(:queue_item, user: user, list_order: 4)
+        post :destroy, id: queue_item2.id
+        expect(queue_item1.reload.list_order).to eq(1)
+        expect(queue_item3.reload.list_order).to eq(2)
+        expect(queue_item4.reload.list_order).to eq(3)
       end
     end
 
