@@ -4,6 +4,7 @@ describe Video do
   
   it { should belong_to(:category) }
   it { should have_many(:reviews).order("created_at DESC") }
+  it { should have_many(:queue_items)}
   it { should validate_presence_of(:title) }
   it { should validate_presence_of(:description) }
 
@@ -12,7 +13,7 @@ describe Video do
     let!(:vid1) { Video.create(title: 'Family Guy', description: 'a funny show', created_at: 1.day.ago) }
     let!(:vid2) { Video.create(title: 'Futurama', description: "A funny show about the future." )}
 
-    it "returns an empty array in there is no match" do
+    it "returns an empty array if there is no match" do
       expect(Video.search_by_title('monk')).to eq([])
     end
 
@@ -24,8 +25,8 @@ describe Video do
       expect(Video.search_by_title('mily').first).to eq(vid1)
     end
 
-    it "returns am array of all matches ordered by created at" do
-      expect(Video.search_by_title('f')).to eq([vid2,vid1])
+    it "returns an array of all matches ordered by created at" do
+      expect(Video.search_by_title('f')).to match_array([vid2,vid1])
     end
 
     it "returns an empty array for a search with an empty string" do

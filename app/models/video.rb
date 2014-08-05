@@ -1,6 +1,7 @@
 class Video < ActiveRecord::Base
   belongs_to :category
   has_many :reviews , -> { order "created_at DESC" }
+  has_many :queue_items
 
   validates_presence_of :title, :description
 
@@ -8,13 +9,12 @@ class Video < ActiveRecord::Base
     if search_term.blank?
       []
     else
-      Video.where('title LIKE ?', "%#{search_term}%").order("created_at DESC")
+      Video.where('title LIKE ?', "%#{search_term}%").order("created_at ASC")
     end
   end
   
   def average_rating
-    average_rating = reviews.average(:rating).round(2) if reviews.average(:rating)
-    average_rating
+    reviews.average(:rating).round(2) if reviews.average(:rating)
   end 
 end
 

@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  helper_method :current_user, :logged_in?
+  helper_method :current_user, :logged_in?, :video_is_in_queue?
 
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id] && User.any?
@@ -17,5 +17,4 @@ class ApplicationController < ActionController::Base
       redirect_to sessions_new_path
     end
   end
-
 end
