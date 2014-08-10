@@ -6,9 +6,7 @@ class QueueItem < ActiveRecord::Base
   delegate :title, to: :video, prefix: :video
 
   def rating
-    if user.reviews.where(video: video).any? 
-      user.reviews.where(video: video).first.rating
-    end
+    user.reviews.where(video: video).first.try(:rating)
   end
 
   def category_name

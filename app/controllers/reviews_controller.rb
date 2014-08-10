@@ -4,9 +4,7 @@ class ReviewsController < ApplicationController
 
   def create
     @video = Video.find(params[:video_id])
-    @review = Review.new(review_params)
-    @review.creator = current_user
-    @review.video_id = @video.id
+    @review = Review.new(review_params.merge!(creator: current_user, video: @video))
     if @review.save
       flash[:success] = "Your review has been added."
       redirect_to video_path(@video)
