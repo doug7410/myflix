@@ -127,7 +127,11 @@ describe QueueItemsController do
   end     
 
   describe "PATCH update" do
-    it "redirect to log in path if the user is not logged in" do
+    
+    context "with valid inputs"
+    context "with invalid inputs"
+    
+    it "redirects to log in path if the user is not logged in" do
       patch :update
       expect(response).to redirect_to sessions_new_path 
     end
