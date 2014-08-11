@@ -128,51 +128,91 @@ describe QueueItemsController do
 
   describe "PATCH update" do
     
-    context "with valid inputs"
-    context "with invalid inputs"
-    
-    it "redirects to log in path if the user is not logged in" do
-      patch :update
-      expect(response).to redirect_to sessions_new_path 
+    context "with valid inputs" do
+      it "redirects to my_queue page if logged in" do
+        user = Fabricate(:user)
+        session[:user_id] = user.id
+        queue_item1 = Fabricate(:queue_item, user: user)
+        queue_item2 = Fabricate(:queue_item, user: user)
+        queue_item3 = Fabricate(:queue_item, user: user)
+        
+        patch :update, queue_items: [{id: queue_item1.id, list_order: 2}, {id: queue_item2.id, list_order: 1}, {id: queue_item3.id, list_order: 3}]
+        expect(response).to redirect_to my_queue_path
+      end
+
+      it "updtes the list_order for each queue item" do
+        user = Fabricate(:user)
+        session[:user_id] = user.id
+        queue_item1 = Fabricate(:queue_item, user: user, list_order: 1)
+        queue_item2 = Fabricate(:queue_item, user: user, list_order: 2)
+        queue_item3 = Fabricate(:queue_item, user: user, list_order: 3)
+        
+        patch :update, queue_items: [{id: queue_item1.id, list_order: 2}, {id: queue_item2.id, list_order: 1}, {id: queue_item3.id, list_order: 3}]
+        
+        expect(user.queue_items.map(&:list_order)).to eq([1,2,3])
+      end
+
+      it "automatically orders list_items sequentially accoriding to user input" do
+        user = Fabricate(:user)
+        session[:user_id] = user.id
+        queue_item1 = Fabricate(:queue_item, user: user)
+        queue_item2 = Fabricate(:queue_item, user: user)
+        queue_item3 = Fabricate(:queue_item, user: user)
+        
+        patch :update, queue_items: [{id: queue_item1.id, list_order: 2}, {id: queue_item2.id, list_order: 4}, {id: queue_item3.id, list_order: 3}]
+        
+        expect(queue_item1.reload.list_order).to eq(1)
+        expect(queue_item2.reload.list_order).to eq(3)
+        expect(queue_item3.reload.list_order).to eq(2)
+      end
     end
 
-    it "redirects to my_queue page if logged in" do
-      user = Fabricate(:user)
-      session[:user_id] = user.id
-      queue_item1 = Fabricate(:queue_item, user: user)
-      queue_item2 = Fabricate(:queue_item, user: user)
-      queue_item3 = Fabricate(:queue_item, user: user)
-      
-      patch :update, queue_items: [{id: queue_item1.id, list_order: 2}, {id: queue_item2.id, list_order: 1}, {id: queue_item3.id, list_order: 3}]
-      expect(response).to redirect_to my_queue_path
+    context "with invalid inputs" do
+      it "redirects to the my queue page" do
+        user = Fabricate(:user)
+        session[:user_id] = user.id
+        queue_item1 = Fabricate(:queue_item, user: user)
+        queue_item2 = Fabricate(:queue_item, user: user)
+        patch :update, queue_items: [{id: queue_item1.id, list_order: 2}, {id: queue_item2.id, list_order: 3.5}]
+        expect(response).to redirect_to my_queue_path
+      end
+
+      it "sets the flash error message" do
+        user = Fabricate(:user)
+        session[:user_id] = user.id
+        queue_item1 = Fabricate(:queue_item, user: user, list_order: 1)
+        queue_item2 = Fabricate(:queue_item, user: user, list_order: 2)
+        patch :update, queue_items: [{id: queue_item1.id, list_order: 2}, {id: queue_item2.id, list_order: 1.2}]
+        expect(flash[:warning]).to be_present
+      end
+
+      it "does not change the queue items" do
+        user = Fabricate(:user)
+        session[:user_id] = user.id
+        queue_item1 = Fabricate(:queue_item, user: user, list_order: 1)
+        queue_item2 = Fabricate(:queue_item, user: user, list_order: 2)
+        patch :update, queue_items: [{id: queue_item1.id, list_order: 3}, {id: queue_item2.id, list_order: 3.5}]
+        expect(queue_item1.reload.list_order).to eq(1)
+      end
     end
 
-    it "updtes the list_order for each queue item" do
-      user = Fabricate(:user)
-      session[:user_id] = user.id
-      queue_item1 = Fabricate(:queue_item, user: user)
-      queue_item2 = Fabricate(:queue_item, user: user)
-      queue_item3 = Fabricate(:queue_item, user: user)
-      
-      patch :update, queue_items: [{id: queue_item1.id, list_order: 2}, {id: queue_item2.id, list_order: 1}, {id: queue_item3.id, list_order: 3}]
-      
-      expect(queue_item1.reload.list_order).to eq(2)
-      expect(queue_item2.reload.list_order).to eq(1)
-      expect(queue_item3.reload.list_order).to eq(3)
+    context "with unauthenticated users" do
+      it "redirects to log in path if the user is not logged in" do
+        patch :update
+        expect(response).to redirect_to sessions_new_path 
+      end
     end
 
-    it "automatically orders list_items sequentially accoriding to user input" do
-      user = Fabricate(:user)
-      session[:user_id] = user.id
-      queue_item1 = Fabricate(:queue_item, user: user)
-      queue_item2 = Fabricate(:queue_item, user: user)
-      queue_item3 = Fabricate(:queue_item, user: user)
-      
-      patch :update, queue_items: [{id: queue_item1.id, list_order: 2}, {id: queue_item2.id, list_order: 4}, {id: queue_item3.id, list_order: 3}]
-      
-      expect(queue_item1.reload.list_order).to eq(1)
-      expect(queue_item2.reload.list_order).to eq(3)
-      expect(queue_item3.reload.list_order).to eq(2)
+    context "with queue items that do not belong to the current user" do
+      it "does not change the queue items" do
+        user = Fabricate(:user)
+        user1 = Fabricate(:user)
+        session[:user_id] = user.id
+        queue_item1 = Fabricate(:queue_item, user: user, list_order: 1)
+        queue_item2 = Fabricate(:queue_item, user: user1, list_order: 2)
+        patch :update, queue_items: [{id: queue_item1.id, list_order: 3}, {id: queue_item2.id, list_order: 5}]
+        expect(queue_item2.reload.list_order).to eq(2)
+      end
     end
   end
 end
