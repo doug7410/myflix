@@ -36,8 +36,9 @@ def update_queue_items
   ActiveRecord::Base.transaction do
     params[:queue_items].each do |queue_item_data|
       queue_item = QueueItem.find(queue_item_data[:id])
+      
       if queue_item.user == current_user
-        queue_item.update_attributes!(list_order: queue_item_data[:list_order])
+        queue_item.update_attributes!(list_order: queue_item_data[:list_order], rating: queue_item_data[:rating])
       end
     end
   end

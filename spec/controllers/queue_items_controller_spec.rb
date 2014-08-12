@@ -127,7 +127,6 @@ describe QueueItemsController do
   end     
 
   describe "PATCH update" do
-    
     context "with valid inputs" do
       it "redirects to my_queue page if logged in" do
         user = Fabricate(:user)
@@ -140,32 +139,20 @@ describe QueueItemsController do
         expect(response).to redirect_to my_queue_path
       end
 
-      it "updtes the list_order for each queue item" do
+      it "updates and normalizes the list_order of queue items" do
         user = Fabricate(:user)
         session[:user_id] = user.id
-        queue_item1 = Fabricate(:queue_item, user: user, list_order: 1)
-        queue_item2 = Fabricate(:queue_item, user: user, list_order: 2)
-        queue_item3 = Fabricate(:queue_item, user: user, list_order: 3)
+        video1 = Fabricate(:video)
+        video2 = Fabricate(:video)
+        queue_item1 = Fabricate(:queue_item, user: user, video: video1)
+        queue_item2 = Fabricate(:queue_item, user: user, video: video2)
         
-        patch :update, queue_items: [{id: queue_item1.id, list_order: 2}, {id: queue_item2.id, list_order: 1}, {id: queue_item3.id, list_order: 3}]
-        
-        expect(user.queue_items.map(&:list_order)).to eq([1,2,3])
-      end
-
-      it "automatically orders list_items sequentially accoriding to user input" do
-        user = Fabricate(:user)
-        session[:user_id] = user.id
-        queue_item1 = Fabricate(:queue_item, user: user)
-        queue_item2 = Fabricate(:queue_item, user: user)
-        queue_item3 = Fabricate(:queue_item, user: user)
-        
-        patch :update, queue_items: [{id: queue_item1.id, list_order: 2}, {id: queue_item2.id, list_order: 4}, {id: queue_item3.id, list_order: 3}]
+        patch :update, queue_items: [{id: queue_item1.id, list_order: 2}, {id: queue_item2.id, list_order: 4}]
         
         expect(queue_item1.reload.list_order).to eq(1)
-        expect(queue_item2.reload.list_order).to eq(3)
-        expect(queue_item3.reload.list_order).to eq(2)
+        expect(queue_item2.reload.list_order).to eq(2)
       end
-    end
+    end 
 
     context "with invalid inputs" do
       it "redirects to the my queue page" do
