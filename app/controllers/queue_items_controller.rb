@@ -14,14 +14,34 @@ class QueueItemsController < ApplicationController
   def destroy
     queue_item = QueueItem.find(params[:id])
     queue_item.destroy if current_user.queue_items.include?(queue_item)
-    current_user.queue_items.each_with_index do |item, index|
-      item.update(list_order: index + 1)
-    end
-
+    current_user.normalize_queue_item_postitions
     redirect_to my_queue_path
   end
 
-  private
+  def update
+    begin 
+      update_queue_items
+      current_user.normalize_queue_item_postitions
+    rescue
+      flash[:warning] = "Invalid list order"
+      redirect_to my_queue_path
+      return
+    end
+    redirect_to my_queue_path
+  end
 
-  
+private
+
+def update_queue_items
+  ActiveRecord::Base.transaction do
+    params[:queue_items].each do |queue_item_data|
+      queue_item = QueueItem.find(queue_item_data[:id])
+      
+      if queue_item.user == current_user
+        queue_item.update_attributes!(list_order: queue_item_data[:list_order], rating: queue_item_data[:rating])
+      end
+    end
+  end
+end
+
 end

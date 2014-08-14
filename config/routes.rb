@@ -20,5 +20,6 @@ Myflix::Application.routes.draw do
   post '/login', to: 'sessions#create'
   get '/log_out', to: 'sessions#destroy'
   get '/my_queue', to: 'queue_items#index'
+  patch '/my_queue', to: 'queue_items#update', as: :update_queue
   get 'ui(/:action)', controller: 'ui' 
 end

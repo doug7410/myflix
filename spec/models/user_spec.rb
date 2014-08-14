@@ -3,7 +3,7 @@ require 'spec_helper'
 describe User do 
   it { should have_many(:queue_items).order("list_order ASC")}
 
-  describe "video_is_in_queue?" do
+  describe "has_video_in_queue?" do
     it "returns true if the video is in the current user queue" do
       user = Fabricate(:user)
       video = Fabricate(:video)

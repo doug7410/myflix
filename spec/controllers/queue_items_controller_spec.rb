@@ -12,7 +12,6 @@ describe QueueItemsController do
     end
 
     it "redirects to the log in page if not logged in" do
-      session[:user_id] = nil
       get :index
       expect(response).to redirect_to sessions_new_path 
     end
@@ -85,7 +84,7 @@ describe QueueItemsController do
       before do
         session[:user_id] = user.id
       end
-      it "redirects to the my queue page if the use is logged in" do
+      it "redirects to the my queue page if the user is logged in" do
         queue_item = Fabricate(:queue_item)
         post :destroy, id: queue_item.id
         expect(response).to redirect_to my_queue_path
@@ -126,4 +125,82 @@ describe QueueItemsController do
       end
     end
   end     
+
+  describe "PATCH update" do
+    context "with valid inputs" do
+      it "redirects to my_queue page if logged in" do
+        user = Fabricate(:user)
+        session[:user_id] = user.id
+        queue_item1 = Fabricate(:queue_item, user: user)
+        queue_item2 = Fabricate(:queue_item, user: user)
+        queue_item3 = Fabricate(:queue_item, user: user)
+        
+        patch :update, queue_items: [{id: queue_item1.id, list_order: 2}, {id: queue_item2.id, list_order: 1}, {id: queue_item3.id, list_order: 3}]
+        expect(response).to redirect_to my_queue_path
+      end
+
+      it "updates and normalizes the list_order of queue items" do
+        user = Fabricate(:user)
+        session[:user_id] = user.id
+        video1 = Fabricate(:video)
+        video2 = Fabricate(:video)
+        queue_item1 = Fabricate(:queue_item, user: user, video: video1)
+        queue_item2 = Fabricate(:queue_item, user: user, video: video2)
+        
+        patch :update, queue_items: [{id: queue_item1.id, list_order: 2}, {id: queue_item2.id, list_order: 4}]
+        
+        expect(queue_item1.reload.list_order).to eq(1)
+        expect(queue_item2.reload.list_order).to eq(2)
+      end
+    end 
+
+    context "with invalid inputs" do
+      it "redirects to the my queue page" do
+        user = Fabricate(:user)
+        session[:user_id] = user.id
+        queue_item1 = Fabricate(:queue_item, user: user)
+        queue_item2 = Fabricate(:queue_item, user: user)
+        patch :update, queue_items: [{id: queue_item1.id, list_order: 2}, {id: queue_item2.id, list_order: 3.5}]
+        expect(response).to redirect_to my_queue_path
+      end
+
+      it "sets the flash error message" do
+        user = Fabricate(:user)
+        session[:user_id] = user.id
+        queue_item1 = Fabricate(:queue_item, user: user, list_order: 1)
+        queue_item2 = Fabricate(:queue_item, user: user, list_order: 2)
+        patch :update, queue_items: [{id: queue_item1.id, list_order: 2}, {id: queue_item2.id, list_order: 1.2}]
+        expect(flash[:warning]).to be_present
+      end
+
+      it "does not change the queue items" do
+        user = Fabricate(:user)
+        session[:user_id] = user.id
+        queue_item1 = Fabricate(:queue_item, user: user, list_order: 1)
+        queue_item2 = Fabricate(:queue_item, user: user, list_order: 2)
+        patch :update, queue_items: [{id: queue_item1.id, list_order: 3}, {id: queue_item2.id, list_order: 3.5}]
+        expect(queue_item1.reload.list_order).to eq(1)
+      end
+    end
+
+    context "with unauthenticated users" do
+      it "redirects to log in path if the user is not logged in" do
+        patch :update
+        expect(response).to redirect_to sessions_new_path 
+      end
+    end
+
+    context "with queue items that do not belong to the current user" do
+      it "does not change the queue items" do
+        user = Fabricate(:user)
+        user1 = Fabricate(:user)
+        session[:user_id] = user.id
+        queue_item1 = Fabricate(:queue_item, user: user, list_order: 1)
+        queue_item2 = Fabricate(:queue_item, user: user1, list_order: 2)
+        patch :update, queue_items: [{id: queue_item1.id, list_order: 3}, {id: queue_item2.id, list_order: 5}]
+        expect(queue_item2.reload.list_order).to eq(2)
+      end
+    end
+  end
 end
+

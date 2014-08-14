@@ -24,4 +24,9 @@ class User < ActiveRecord::Base
     queue_items.where(video: video).present?
   end
 
+  def normalize_queue_item_postitions
+    self.queue_items.each_with_index do |item, index|
+      item.update!(list_order: index + 1)
+    end
+  end
 end
