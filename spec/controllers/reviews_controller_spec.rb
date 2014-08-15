@@ -1,13 +1,10 @@
 require 'spec_helper'
 
 describe ReviewsController do
-  context "the user is logged in" do
+  describe "POST create" do
     let(:video) { Fabricate(:video) }
-    let(:current_user) { Fabricate(:user) }
 
-    before do
-      session[:user_id] = current_user.id
-    end
+    before { set_current_user }
 
     context "with valid input" do
       before do
@@ -29,6 +26,7 @@ describe ReviewsController do
       it "makes sure the review is associated with the video" do
         expect(Review.first.video).to eq(video)
       end
+
       it "sets the flash message" do
         post :create, review: {rating: 3, body: "i am a review"}, video_id: video.id
         expect(flash[:success]).to be_truthy
@@ -56,14 +54,9 @@ describe ReviewsController do
         expect(response).to render_template 'videos/show'
       end      
     end
-  end
 
-  context "the user is not logged in" do 
-     it "redirects to the log in path" do
-        video = Fabricate(:video)
-        session[:user_id] = nil
-        post :create, review: {body: "i am a review"}, video_id: video.id
-        expect(response).to redirect_to sessions_new_path
-     end
+    it_behaves_like "require log in" do
+      let(:action) { post :create, review: {body: "i am a review"}, video_id: Fabricate(:video).id }
+    end
   end
 end
