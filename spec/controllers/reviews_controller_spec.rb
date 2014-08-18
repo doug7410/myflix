@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe ReviewsController do
   describe "POST create" do
+    it_behaves_like "require log in" do
+      let(:action) { post :create, review: {body: "i am a review"}, video_id: Fabricate(:video).id }
+    end
+    
     let(:video) { Fabricate(:video) }
 
     before { set_current_user }
@@ -53,10 +57,6 @@ describe ReviewsController do
         post :create, review: {body: "i am a review"}, video_id: video.id
         expect(response).to render_template 'videos/show'
       end      
-    end
-
-    it_behaves_like "require log in" do
-      let(:action) { post :create, review: {body: "i am a review"}, video_id: Fabricate(:video).id }
     end
   end
 end

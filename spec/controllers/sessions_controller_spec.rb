@@ -1,27 +1,24 @@
 require 'spec_helper'
 
 describe SessionsController do
-  before { set_current_user }
-
   describe "GET new" do
     it "renders the new page if the user is not logged in" do
-      clear_current_user
       get :new
       expect(response).to render_template :new
     end 
 
-    it_behaves_like "the user is logged in" do
-      let(:action) { get :new } 
-      let(:redirect_page) { home_path }
+    it "redirects to the home page if a user is logged in" do
+      session[:user_id] = Fabricate(:user).id 
+      get :new
+      expect(response).to redirect_to home_path
     end
   end
 
   describe "POST create" do
     context "users credentials are valid" do
-      let!(:bob) { Fabricate(:user) }
+      let(:bob) { Fabricate(:user) }
 
       before do
-        clear_current_user
         post :create, email: bob.email, password: bob.password
       end
 
@@ -39,10 +36,9 @@ describe SessionsController do
     end
 
     context "users credentials are not valid" do
-      let!(:bob) { Fabricate(:user) }
+      let(:bob) { Fabricate(:user) }
 
       before do
-        clear_current_user
         post :create, email: bob.email, password: bob.password + '123'
       end
 
@@ -62,6 +58,7 @@ describe SessionsController do
 
   describe "GET destroy" do
     before do
+      set_current_user
       get :destroy
     end
 

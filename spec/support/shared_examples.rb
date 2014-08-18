@@ -5,10 +5,3 @@ shared_examples "require log in" do
     expect(response).to redirect_to sessions_new_path
   end
 end
-
-shared_examples "the user is logged in" do
-  it "redirects to the correct page" do
-    action
-    expect(response).to redirect_to redirect_page
-  end
-end

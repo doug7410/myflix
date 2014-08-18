@@ -9,11 +9,10 @@ describe QueueItemsController do
       queue_iems2 = Fabricate(:queue_item, user: bob )
       get :index
       expect(assigns(:queue_items)).to match_array([queue_iems1, queue_iems2])
-    end
+    end 
 
-    it "redirects to the log in page if not logged in" do
-      get :index
-      expect(response).to redirect_to sessions_new_path 
+    it_behaves_like "require log in" do
+      let(:action) { get :index }
     end
   end
 
@@ -67,9 +66,8 @@ describe QueueItemsController do
       expect(bob.queue_items.count).to eq(1)
     end
 
-    it "redirects to the login page if the user is not signed in" do
-      post :create, video_id: 13
-      expect(response).to redirect_to sessions_new_path
+    it_behaves_like "require log in" do
+      let(:action) { post :create, video_id: 13 }
     end
   end
 
@@ -110,14 +108,16 @@ describe QueueItemsController do
       expect(queue_item3.reload.list_order).to eq(2)
     end
     
-    it "redirects to login page if the user is not logged in" do
-      queue_item = Fabricate(:queue_item)
-      post :destroy, id: queue_item.id
-      expect(response).to redirect_to sessions_new_path
+    it_behaves_like "require log in" do
+      let(:action) { post :destroy, id: Fabricate(:queue_item).id }
     end
   end     
 
   describe "PATCH update" do
+    it_behaves_like "require log in" do
+      let(:action) { patch :update }
+    end
+    
     context "with valid inputs" do
 
       let(:bob) { Fabricate(:user) }
@@ -171,13 +171,6 @@ describe QueueItemsController do
         queue_item2 = Fabricate(:queue_item, user: bob, list_order: 2)
         patch :update, queue_items: [{id: queue_item1.id, list_order: 3}, {id: queue_item2.id, list_order: 3.5}]
         expect(queue_item1.reload.list_order).to eq(1)
-      end
-    end
-
-    context "with unauthenticated users" do
-      it "redirects to log in path if the user is not logged in" do
-        patch :update
-        expect(response).to redirect_to sessions_new_path 
       end
     end
 
