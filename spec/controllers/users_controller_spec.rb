@@ -42,5 +42,44 @@ describe UsersController do
       end
     end
   end
+
+  describe "GET show" do
+    it_behaves_like "require log in" do
+      let(:action) { get :show, id: 2 }
+    end
+
+    context "the user is logged in" do
+
+      before { set_current_user }
+
+      it "sets the @user to the user being viewed" do
+        bob = Fabricate(:user)
+        get :show, id: bob.id
+        expect(assigns(:user)).to eq(bob)
+      end
+
+      it "sets the @queue_items to the queue items of the user being viewed" do
+        bob = Fabricate(:user)
+        queue_item = Fabricate(:queue_item, user: bob)
+        get :show, id: bob.id
+        expect(assigns(:queue_items)).to eq([queue_item])
+      end
+
+      it "sets the @reviews to the users reviews" do
+        bob = Fabricate(:user)
+        house = Fabricate(:video)
+        review1 = Fabricate(:review, user: bob, video: house)
+        review2 = Fabricate(:review, user: bob, video: house)
+        get :show, id: bob.id
+        expect(assigns(:reviews)).to eq([review1, review2])
+      end
+
+      it "renders the show user page for the user being viewd" do
+        bob = Fabricate(:user)
+        get :show, id: bob.id
+        expect(response).to render_template :show
+      end
+    end
+  end
 end
 
