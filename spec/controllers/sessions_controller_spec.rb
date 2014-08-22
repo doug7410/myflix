@@ -16,7 +16,7 @@ describe SessionsController do
 
   describe "POST create" do
     context "users credentials are valid" do
-      let!(:bob) { Fabricate(:user) }
+      let(:bob) { Fabricate(:user) }
 
       before do
         post :create, email: bob.email, password: bob.password
@@ -36,7 +36,7 @@ describe SessionsController do
     end
 
     context "users credentials are not valid" do
-      let!(:bob) { Fabricate(:user) }
+      let(:bob) { Fabricate(:user) }
 
       before do
         post :create, email: bob.email, password: bob.password + '123'
@@ -58,7 +58,7 @@ describe SessionsController do
 
   describe "GET destroy" do
     before do
-      session[:user_id] = Fabricate(:user).id
+      set_current_user
       get :destroy
     end
 

@@ -12,7 +12,6 @@ class Video < ActiveRecord::Base
       Video.where('title LIKE ?', "%#{search_term}%").order("created_at ASC")
     end
   end
-  
   def average_rating
     reviews.average(:rating).round(2) if reviews.average(:rating)
   end 

@@ -5,5 +5,5 @@
     .videos.row
       - category.recent_videos.each do |vid|
         .video.col-sm-2 
-          = link_to video_path(vid), nil  do
+          = link_to video_path(vid)  do
             %img(src="#{vid.small_cover_url}")

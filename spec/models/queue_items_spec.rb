@@ -76,7 +76,4 @@ describe QueueItem do
       expect(queue_item.category).to eq(category)
     end
   end
-
-
-
 end
