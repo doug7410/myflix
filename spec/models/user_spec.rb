@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe User do 
   it { should have_many(:queue_items).order("list_order ASC")}
+  it { should have_many(:reviews).order("created_at DESC")}
 
   describe "has_video_in_queue?" do
     it "returns true if the video is in the current user queue" do
