@@ -11,6 +11,9 @@ class User < ActiveRecord::Base
   validates :email, presence: :true, uniqueness: true
   validates :full_name, presence: :true
 
+  def follows?(another_user)
+    following_relationships.map(&:leader).include?(another_user)
+  end
 
   def video_is_in_queue?(video)
     true if queue_items.where(video: video).present?

@@ -54,4 +54,38 @@ describe RelationshipsController do
       expect(flash[:success]).not_to be_nil
     end
   end
+
+  describe "POST create" do
+    it_behaves_like "require log in" do
+      let(:action) { post :create, id: 4 }
+    end
+
+    let!(:tom) { Fabricate(:user) }
+    let!(:bob) { Fabricate(:user) }
+
+    before do
+      set_current_user(bob)
+    end
+
+    it "creates a new relationship" do
+      post :create, id: tom.id
+      expect(bob.following_relationships.first.leader).to eq(tom)
+    end
+
+    it "redirects to the people index page" do
+      post :create, id: tom.id
+      expect(response).to redirect_to people_path
+    end
+
+    it "does not create a relationship between the current user and their self" do
+      post :create, id: bob.id
+      expect(Relationship.count).to eq(0)
+    end
+
+    it "does not create the relationship if one with the current user and leader exists" do
+      Fabricate(:relationship, follower: bob, leader: tom)
+      post :create, id: tom.id
+      expect(Relationship.count).to eq(1)
+    end
+  end
 end

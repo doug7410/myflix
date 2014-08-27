@@ -22,5 +22,6 @@ Myflix::Application.routes.draw do
   get '/my_queue', to: 'queue_items#index'
   patch '/my_queue', to: 'queue_items#update', as: :update_queue
   get 'people', to: 'relationships#index'
+  post 'follow_person/:id', to: 'relationships#create', as: :follow_person
   get 'ui(/:action)', controller: 'ui' 
 end
