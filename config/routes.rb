@@ -12,6 +12,8 @@ Myflix::Application.routes.draw do
   resources :category
   resources :users, only: [:create, :show]
   resources :queue_items, only: [:create, :destroy]
+  resources :relationships, only: [:destroy]
+  
 
   
   get '/home', to: 'home#index'
@@ -21,5 +23,6 @@ Myflix::Application.routes.draw do
   get '/log_out', to: 'sessions#destroy'
   get '/my_queue', to: 'queue_items#index'
   patch '/my_queue', to: 'queue_items#update', as: :update_queue
+  get 'people', to: 'relationships#index'
   get 'ui(/:action)', controller: 'ui' 
 end

@@ -21,4 +21,8 @@ doug = User.create(email: 'doug@doug.com', password: 'password', full_name: "Dou
 Review.create(rating: 5, body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sentiunt eligendi praeclare eram volunt nulli tenebimus molita confirmare, exorsus tractatas sollicitare alterum zenonem redeamus partiendo conflixisse angere, scripta loquuntur. Frequenter exercendi praestabiliorem. Personae exquisitaque convicia iucunda, uberius incommoda, fortibus aperta clarorum aperiam expectant rudem istis desideraturam, cognitioque adipisci. Conversa utilitate inpotenti. Ignoratione existunt chremes tradunt sollicitant doloribus, virtute optinere, durissimis quantumcumque potuimus opus. Libero aequo distinguantur, confirmat stoicis meis consumeret adiit futurove imitarentur tempore nemo cumanum, nominavi forensibus prima fecisse audiam.', user_id: doug.id, video_id: breaking_bad.id)
 Review.create(rating: 3, body: 'Conversa utilitate inpotenti. Ignoratione existunt chremes tradunt sollicitant doloribus, virtute optinere, durissimis quantumcumque potuimus opus. Libero aequo distinguantur, confirmat stoicis meis consumeret adiit futurove imitarentur tempore nemo cumanum, nominavi forensibus prima fecisse audiam.', user_id: doug.id, video_id: breaking_bad.id)
 
+bob = User.create(email: 'bob@bob.bob', password: 'password', full_name: "Bobby Brown")
+jessie = User.create(email: 'jessie@hjames.com', password: 'password', full_name: "Jessie James")
 
+Relationship.create(follower_id: doug.id, leader_id: bob.id)
+Relationship.create(follower_id: doug.id, leader_id: jessie.id)
