@@ -11,7 +11,7 @@ feature "user interacts with social media features"  do
   scenario "follow and unfollow a user" do
     log_in_user(bob)
     click_on_a_video(the_office)
-    click_on_the_first_review_user
+    click_on_a_review_user(tom)
     expect_to_be_on_the_users_page(tom)
     follow_a_user(tom)
     expect_the_user_to_be_on_people_page(tom)
@@ -20,7 +20,7 @@ feature "user interacts with social media features"  do
   end
 end
 
-def  expect_a_user_not_to_be_on_people_page(user)
+def expect_a_user_not_to_be_on_people_page(user)
   expect(page).not_to have_link(user.full_name)
 end
 
@@ -46,6 +46,6 @@ def click_on_a_video(video)
   find("a[href='/videos/#{video.id}']").click
 end
 
-def click_on_the_first_review_user
-  find("a[href='/users/#{tom.id}']").click
+def click_on_a_review_user(user)
+  click_link user.full_name
 end
