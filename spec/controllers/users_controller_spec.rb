@@ -19,7 +19,7 @@ describe UsersController do
     context "input is valid" do
       before do
         post :create, user: Fabricate.attributes_for(:user)
-      end
+      end 
       
       it "creates the new @user" do
         expect(User.count).to eq(1)
@@ -55,7 +55,7 @@ describe UsersController do
       it "sets the @user to the user being viewed" do
         bob = Fabricate(:user)
         get :show, id: bob.id
-        expect(assigns(:user)).to eq(bob)
+        expect(assigns(:user)).to eq(bob) 
       end
 
       it "sets the @queue_items to the queue items of the user being viewed" do
@@ -82,4 +82,3 @@ describe UsersController do
     end
   end
 end
-

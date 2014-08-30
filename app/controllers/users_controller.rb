@@ -12,11 +12,11 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    if @user.save
+    if @user.save 
       flash[:success] = "You were registered."
       redirect_to sessions_new_path
     else
-      render :new
+      render :new 
     end
   end
 
