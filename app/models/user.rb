@@ -2,11 +2,18 @@ class User < ActiveRecord::Base
   has_many :reviews , -> { order "created_at DESC" }
   has_many :queue_items, -> { order "list_order ASC"}
 
+  has_many :following_relationships, class_name: "Relationship", foreign_key: :follower_id
+  has_many :leading_relationships, class_name: "Relationship", foreign_key: :leader_id
+
   has_secure_password validations: false
 
   validates :password, presence: :true, length: {minimum: 6}, on: :create
   validates :email, presence: :true, uniqueness: true
   validates :full_name, presence: :true
+
+  def follows?(another_user)
+    following_relationships.map(&:leader).include?(another_user)
+  end
 
   def video_is_in_queue?(video)
     true if queue_items.where(video: video).present?

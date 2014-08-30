@@ -46,7 +46,6 @@ def expect_queue_page_to_have_video(video)
 end
 
 def click_video_and_add_to_queue(video)
-  visit home_path
-  find("a[href='/videos/#{video.id}']").click
-  click_link "+ My Queue"
+  click_a_video_on_the_home_page(video)
+  click_link "+ My Queue" 
 end
