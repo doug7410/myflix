@@ -10,7 +10,7 @@ feature "user interacts with social media features"  do
 
   scenario "follow and unfollow a user" do
     log_in_user(bob)
-    click_on_a_video(the_office)
+    click_a_video_on_the_home_page(the_office)
     click_on_a_review_user(tom)
     expect_to_be_on_the_users_page(tom)
     follow_a_user(tom)
@@ -39,11 +39,6 @@ end
 
 def expect_to_be_on_the_users_page(user)  
   expect(current_path).to eq(user_path(user)) 
-end
-
-def click_on_a_video(video)
-  visit home_path
-  find("a[href='/videos/#{video.id}']").click
 end
 
 def click_on_a_review_user(user)
