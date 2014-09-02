@@ -18,4 +18,7 @@ Myflix::Application.configure do
   config.assets.debug = true
 
   config.eager_load = false
+
+  # send emails to the browser
+  config.action_mailer.delivery_method = :letter_opener
 end

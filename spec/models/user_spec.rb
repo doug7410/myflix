@@ -29,7 +29,7 @@ describe User do
     it "returns false of the user is not following the other user" do
       bob = Fabricate(:user)
       tom = Fabricate(:user)
-      expect(bob.follows?(tom)).to eq(false)
+      expect(bob.follows?(tom)).to eq(false) 
     end
   end
 end

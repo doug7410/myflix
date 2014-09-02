@@ -14,8 +14,9 @@ class UsersController < ApplicationController
 
     if @user.save 
       flash[:success] = "You were registered."
+      MyflixMailer.welcome_user_email(@user).deliver 
       redirect_to sessions_new_path
-    else
+    else 
       render :new 
     end
   end
