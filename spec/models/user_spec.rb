@@ -32,4 +32,18 @@ describe User do
       expect(bob.follows?(tom)).to eq(false) 
     end
   end
+
+  describe "generate_token" do
+    it "generates a token for the user" do
+      bob = Fabricate(:user)
+      bob.generate_token
+      expect(bob.token).not_to be_nil
+    end
+
+    it "generates a created_at timestamp for the token" do
+      bob = Fabricate(:user)
+      bob.generate_token
+      expect(bob.token_created_at).not_to be_nil
+    end 
+  end
 end

@@ -11,6 +11,12 @@ class User < ActiveRecord::Base
   validates :email, presence: :true, uniqueness: true
   validates :full_name, presence: :true
 
+  def generate_token
+    self.token = SecureRandom.urlsafe_base64 
+    self.token_created_at = Time.now
+    self.save
+  end
+
   def follows?(another_user)
     following_relationships.map(&:leader).include?(another_user)
   end

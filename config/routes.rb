@@ -13,7 +13,11 @@ Myflix::Application.routes.draw do
   resources :users, only: [:create, :show]
   resources :queue_items, only: [:create, :destroy]
   resources :relationships, only: [:destroy]
-    
+
+
+  get '/forgot_password', to: 'sessions#forgot_password'
+  post '/send_password_email', to: 'sessions#send_password_email'  
+  get '/reset_password', to: 'session#reset_password'
   get '/home', to: 'home#index'
   get '/register', to: 'users#new'
   get '/login', to: 'sessions#new', as: :sessions_new
