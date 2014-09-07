@@ -5,9 +5,8 @@ class MyflixMailer < ActionMailer::Base
     mail from: 'd.steinberg@gmail.com', to: user.email, subject: "Welcome to Myflix!" 
   end
 
-  def reset_password(user, link)
+  def send_password_reset(user)
     @user = user
-    @reset_password_link = link
     mail from: 'info@myflix.com', to: user.email, subject: "MyFlix: reset your password"
   end
 end

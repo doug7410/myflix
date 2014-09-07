@@ -74,46 +74,4 @@ describe SessionsController do
       expect(flash[:success]).to eq("You have logged out.")
     end
   end
-
-  describe "POST send_password_email" do
-    context "with invalid input" do
-      it "redirects to the forgot password page if email is blank" do
-        post :send_password_email, email: ''
-        expect(response).to redirect_to forgot_password_path
-      end
-
-      it "redirects to the forgot password page if email does not exist in system" do
-        post :send_password_email, email: 'some@email.com'
-        expect(response).to redirect_to forgot_password_path
-      end
-    end
-
-    context "with valid input" do
-      after { ActionMailer::Base.deliveries.clear }
-
-      it "renders the confirm_password_reset template" do
-        bob = Fabricate(:user)
-        post :send_password_email, email: bob.email 
-        expect(response).to render_template :confirm_password_reset
-      end
-
-      it "sends an email to the correct recipent if they exist in the system" do
-        bob = Fabricate(:user, email: "bob@bob.com")
-        post :send_password_email, email: bob.email 
-        expect(ActionMailer::Base.deliveries.last.to).to eq(["bob@bob.com"])
-      end
-
-      it "assigngs @reset_password_link" do  
-        bob = Fabricate(:user) 
-        post :send_password_email, email: bob.email 
-        expect(assigns(@reset_password_link)).to eq(reset_password_path)
-      end
-
-      #it "send an email with a link to reset the password" do
-      #  bob = Fabricate(:user) 
-      #  post :send_password_email, email: bob.email 
-      #  expect(ActionMailer::Base.deliveries.last.to).to have_link(bob.reset_password_link)
-      #end
-    end
-  end
-end 
+end    

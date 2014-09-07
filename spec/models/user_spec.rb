@@ -1,8 +1,17 @@
 require 'spec_helper'
 
 describe User do 
+  it { should validate_presence_of(:email) }
+  it { should validate_presence_of(:password) }
+  it { should validate_presence_of(:full_name) }
+  it { should validate_uniqueness_of(:email) }
   it { should have_many(:queue_items).order("list_order ASC")}
   it { should have_many(:reviews).order("created_at DESC")}
+
+  it "generates a token when the user is created" do
+    bob = Fabricate(:user)
+    expect(bob.token).to be_present
+  end
 
   describe "has_video_in_queue?" do
     it "returns true if the video is in the current user queue" do
@@ -31,19 +40,5 @@ describe User do
       tom = Fabricate(:user)
       expect(bob.follows?(tom)).to eq(false) 
     end
-  end
-
-  describe "generate_token" do
-    it "generates a token for the user" do
-      bob = Fabricate(:user)
-      bob.generate_token
-      expect(bob.token).not_to be_nil
-    end
-
-    it "generates a created_at timestamp for the token" do
-      bob = Fabricate(:user)
-      bob.generate_token
-      expect(bob.token_created_at).not_to be_nil
-    end 
   end
 end

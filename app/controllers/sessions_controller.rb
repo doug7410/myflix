@@ -21,39 +21,11 @@ class SessionsController < ApplicationController
     redirect_to root_path
   end
 
-  def forgot_password
-
-  end
-
-  def send_password_email
-    if params[:email].blank?
-      flash[:warning] = "Please enter your email address"
-      redirect_to forgot_password_path
-    elsif !email_exists?(params[:email])
-      flash[:warning] = "The email you entered is not registered"
-      redirect_to forgot_password_path 
-    else
-      @user = User.where(email: params[:email]).first
-      binding.pry
-      @reset_password_link = reset_password_path
-      MyflixMailer.reset_password(@user, @reset_password_link).deliver 
-      render :confirm_password_reset
-    end
-  end
-
-  def reset_password
-
-  end
-
   private
 
   def login_user!(user)
     session[:user_id] = user.id
     flash[:success] = "You have logged in."
     redirect_to home_path
-  end
-
-  def email_exists?(email)
-    User.where(email: email).exists?
   end
 end 
