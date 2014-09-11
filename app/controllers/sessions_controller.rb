@@ -28,4 +28,4 @@ class SessionsController < ApplicationController
     flash[:success] = "You have logged in."
     redirect_to home_path
   end
-end
+end 

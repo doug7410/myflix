@@ -4,12 +4,18 @@
       = form_tag sessions_new_path, class: 'sign_in' do 
         %header
           %h1 Sign in
-        %fieldset  
-          = label_tag :email, "Email"
-          = email_field_tag :email, params[:email] || ''
-          = label_tag :password
-          = password_field_tag :password, params[:password] || ''
-        %fieldset.action
+        .row  
+          .form-group.col-sm-4  
+            = label_tag :email, "Email"
+            = email_field_tag :email, params[:email] || '', class: "form-control", placeholder: "your@email.com"
+        .row
+          .form-group.col-sm-4        
+            = label_tag :password
+            = password_field_tag :password, params[:password] || '', class: "form-control", placeholder: "password"
+        .row.form-group
           = submit_tag 'Sign In', class: 'btn'
+        .row
+          = link_to 'Forgot your password?', forgot_password_path
+
         
 

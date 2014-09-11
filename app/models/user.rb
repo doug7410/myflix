@@ -7,9 +7,15 @@ class User < ActiveRecord::Base
 
   has_secure_password validations: false
 
-  validates :password, presence: :true, length: {minimum: 6}, on: :create
+  validates :password, presence: :true, length: {minimum: 6}, on: [:create, :update]
   validates :email, presence: :true, uniqueness: true
   validates :full_name, presence: :true
+
+  before_create :generate_random_token
+
+  def generate_random_token
+    self.token = SecureRandom.urlsafe_base64
+  end 
 
   def follows?(another_user)
     following_relationships.map(&:leader).include?(another_user)

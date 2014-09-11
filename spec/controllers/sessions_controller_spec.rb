@@ -74,4 +74,4 @@ describe SessionsController do
       expect(flash[:success]).to eq("You have logged out.")
     end
   end
-end
+end    
