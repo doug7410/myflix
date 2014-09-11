@@ -23,9 +23,9 @@ describe PasswordResetController do
   end
 
    describe "POST create" do
-    context "with valid token and valid input" do
+    context "with valid token and valid input" do 
       it "redirects to the log in page" do
-        bob = Fabricate(:user)
+        bob = Fabricate(:user)  
         bob.update_column(:token, '12345')
         post :create, token: '12345', password: 'new_password'
         expect(response).to redirect_to sessions_new_path
