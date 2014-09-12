@@ -35,7 +35,7 @@ describe UsersController do
     end
 
     context "email sending" do
-      after { ActionMailer::Base.deliveries.clear }
+      before { ActionMailer::Base.deliveries.clear }
 
       it "sends to the right recipient with valid inputs" do
         post :create, user: {email: "bob@bob.com", password: "password", full_name: "bob bob"}  
@@ -50,6 +50,7 @@ describe UsersController do
       end
 
       it "does not send out the email with invalid inputs" do
+        #ActionMailer::Base.deliveries.clear
         post :create, user: { email: "bob@bob.com" }
         expect(ActionMailer::Base.deliveries.count).to eq(0) 
       end
