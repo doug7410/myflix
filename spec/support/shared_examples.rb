@@ -7,8 +7,7 @@ shared_examples "require log in" do
 end
 
 shared_examples "tokenable" do
-  it "generates a token when the user is created" do
-    user = Fabricate(:user)
-    expect(user.token).to be_present
+  it "generates a token when the object is created" do
+    expect(object.token).to be_present
   end
 end  

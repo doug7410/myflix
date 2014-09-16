@@ -9,7 +9,9 @@ describe User do
   it { should have_many(:invitations).order("created_at ASC")}
   it { should have_many(:reviews).order("created_at DESC")} 
 
-  it_behaves_like "tokenable"
+  it_behaves_like "tokenable" do
+    let(:object) { Fabricate(:user) }
+  end
 
   describe "has_video_in_queue?" do
     it "returns true if the video is in the current user queue" do
