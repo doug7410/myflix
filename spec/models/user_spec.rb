@@ -9,10 +9,7 @@ describe User do
   it { should have_many(:invitations).order("created_at ASC")}
   it { should have_many(:reviews).order("created_at DESC")} 
 
-  it "generates a token when the user is created" do
-    bob = Fabricate(:user)
-    expect(bob.token).to be_present
-  end
+  it_behaves_like "tokenable"
 
   describe "has_video_in_queue?" do
     it "returns true if the video is in the current user queue" do

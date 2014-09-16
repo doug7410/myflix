@@ -6,10 +6,7 @@ describe Invitation do
   it { should validate_presence_of(:recipient_name)} 
   it { should validate_presence_of(:message)} 
 
-  it "generates a token when the user is created" do
-    invite = Fabricate(:invitation) 
-    expect(invite.token).to be_present
-  end
+  it_behaves_like "tokenable" 
 end
 
 
