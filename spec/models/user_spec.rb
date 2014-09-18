@@ -2,15 +2,15 @@ require 'spec_helper'
 
 describe User do 
   it { should validate_presence_of(:email) }
-  it { should validate_presence_of(:password) }
+  it { should validate_presence_of(:password) } 
   it { should validate_presence_of(:full_name) }
   it { should validate_uniqueness_of(:email) }
   it { should have_many(:queue_items).order("list_order ASC")}
-  it { should have_many(:reviews).order("created_at DESC")}
+  it { should have_many(:invitations).order("created_at ASC")}
+  it { should have_many(:reviews).order("created_at DESC")} 
 
-  it "generates a token when the user is created" do
-    bob = Fabricate(:user)
-    expect(bob.token).to be_present
+  it_behaves_like "tokenable" do
+    let(:object) { Fabricate(:user) }
   end
 
   describe "has_video_in_queue?" do
@@ -24,6 +24,21 @@ describe User do
       user = Fabricate(:user)
       video = Fabricate(:video) 
       expect(user.video_is_in_queue?(video)).to be_nil
+    end
+  end
+
+  describe "#follow" do
+    it "follows another user" do
+      bob = Fabricate(:user)
+      tom = Fabricate(:user)
+      bob.follow(tom)
+      expect(bob.follows?(tom)).to be_truthy
+    end
+
+    it "does not follow ones self" do
+      bob = Fabricate(:user)
+      bob.follow(bob)
+      expect(bob.follows?(bob)).to be_falsey
     end
   end
 

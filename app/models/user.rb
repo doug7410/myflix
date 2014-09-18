@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
+  include Tokenable
+  
   has_many :reviews , -> { order "created_at DESC" }
-  has_many :queue_items, -> { order "list_order ASC"}
+  has_many :invitations , -> { order "created_at ASC" }, foreign_key: 'inviter_id'
+  has_many :queue_items, -> { order "list_order ASC"}    
 
   has_many :following_relationships, class_name: "Relationship", foreign_key: :follower_id
   has_many :leading_relationships, class_name: "Relationship", foreign_key: :leader_id
@@ -11,11 +14,14 @@ class User < ActiveRecord::Base
   validates :email, presence: :true, uniqueness: true
   validates :full_name, presence: :true
 
-  before_create :generate_random_token
 
-  def generate_random_token
-    self.token = SecureRandom.urlsafe_base64
-  end 
+  def follow(another_user)
+    following_relationships.create(leader: another_user) if can_follow?(another_user)
+  end
+  
+  def can_follow?(another_user)
+    !(self.follows?(another_user) || another_user == self)
+  end
 
   def follows?(another_user)
     following_relationships.map(&:leader).include?(another_user)

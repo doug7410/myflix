@@ -9,4 +9,4 @@ feature 'User logs in' do
     click_button "Sign In"
     expect(page).to have_content bob.full_name
   end
-end
+end 
