@@ -12,6 +12,9 @@ gem 'bcrypt-ruby', '~>3.1.5'
 gem 'bootstrap_form'
 gem 'figaro'
 gem 'sidekiq'
+gem 'sinatra', require: false
+gem 'slim'
+gem 'unicorn'
 
 group :development do
   gem 'sqlite3'
