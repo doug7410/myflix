@@ -17,5 +17,7 @@ require 'paratrooper'
      end
 
      deployment.deploy
+
+     #this is a small change so I can test if redis is working on the staging environment
    end
  end
