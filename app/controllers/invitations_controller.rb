@@ -9,9 +9,9 @@ class InvitationsController < ApplicationController
   def create
     @invitation = current_user.invitations.build(invitation_params)
     if @invitation.save
-      MyflixMailer.send_invite_email(@invitation).deliver
+      MyflixMailer.delay.send_invite_email(@invitation)
       flash[:success] = "You just sent an invitation to #{@invitation.recipient_name} at #{@invitation.recipient_email}"
-      redirect_to new_invitation_path
+      redirect_to new_invitation_path  
     else
       flash[:warning] = "Please fix the errors below."
       render :new
