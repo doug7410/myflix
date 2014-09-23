@@ -17,4 +17,12 @@ class ApplicationController < ActionController::Base
       redirect_to sessions_new_path
     end
   end
-end
+
+  def ensure_admin
+    if !current_user.admin? 
+      flash[:warning] = "That page is only accessible by admistrators."
+      redirect_to home_path
+    end
+  end 
+end  
+ 
