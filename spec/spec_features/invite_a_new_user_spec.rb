@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'a user logs in and invites a friend to join myflix' do
-  scenario 'a user send out an invite and the invitation is accepted' do
+  scenario 'a user send out an invite and the invitation is accepted', {js: true, vcr: true} do
     bob = Fabricate(:user)
     log_in_user(bob)
     invite_a_friend
@@ -24,19 +24,23 @@ feature 'a user logs in and invites a friend to join myflix' do
     fill_in "Invitation Message", with: "Hi, come join Myflix!"
     click_button "Send Invitation"
     sign_out
-  end
+  end 
 
   def friend_acceptes_invitation 
     open_email('tom@example.com')
     current_email.click_link 'Click here to join MyFlix'
-    fill_in "Password", with: "Password"
+    fill_in "Password", with: "password"
     fill_in "Full Name", with: "Jean Claud"
+    fill_in "Credit Card", with: "4242424242424242"
+    fill_in "Security Code", with: "123"
+    select "7 - July", from: "date_month"
+    select "2015", from: "date_year"  
     click_button "Sign Up"
   end
 
   def friend_signs_in
     fill_in "Email", with: "tom@example.com"
-    fill_in "Password", with: "Password"
+    fill_in "Password", with: "password"
     click_button "Sign In"
   end
 

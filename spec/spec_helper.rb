@@ -16,12 +16,34 @@ VCR.configure do |c|
   c.cassette_library_dir = 'spec/cassettes'
   c.hook_into :webmock
   c.configure_rspec_metadata!
+  c.ignore_localhost = true
 end
 
 RSpec.configure do |c|
   c.fixture_path = "#{::Rails.root}/spec/fixtures"
-  c.use_transactional_fixtures = true
+  c.use_transactional_fixtures = false
   c.infer_base_class_for_anonymous_controllers = false
   c.order = "random"
   c.infer_spec_type_from_file_location!
+  c.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  c.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  c.before(:each, :js => true) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  c.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  c.after(:each) do
+    DatabaseCleaner.clean
+  end
+
+  Capybara.server_port = 52662
 end

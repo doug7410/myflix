@@ -1,18 +1,26 @@
 module StripeWrapper
-  
   class Charge
-    def self.create(options={})
-      StripeWrapper.set_api_key
-      response = Stripe::Charge.create(
-        amount: options[:amount], 
-        currency: "usd", 
-        card: options[:card], 
-        description: options[:description]
-      )
+    attr_reader :response, :error_message
+    def initialize(options={})
+      @response = options[:response]
+      @error_message = options[:error_message]
     end
-  end
+    def self.create(options={})
+      begin
+        response = Stripe::Charge.create(
+          amount: options[:amount], 
+          currency: "usd", 
+          card: options[:card], 
+          description: options[:description]
+        )
+        new(response: response)
+      rescue Stripe::CardError => e
+        new(error_message: e.message)
+      end
+    end
 
-  def self.set_api_key
-    Stripe.api_key = ENV["STRIPE_API_KEY"]
+    def successful?
+      response.present?  
+    end
   end
 end
