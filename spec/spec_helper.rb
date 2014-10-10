@@ -6,6 +6,8 @@ require 'capybara/rails'
 require 'capybara/email/rspec'
 require 'sidekiq/testing'
 require 'vcr'
+require 'capybara/poltergeist'
+Capybara.javascript_driver = :poltergeist
 
 Sidekiq::Testing.inline!  
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }

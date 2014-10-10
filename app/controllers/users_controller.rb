@@ -33,13 +33,14 @@ class UsersController < ApplicationController
         @user.save 
         handle_invitation
         MyflixMailer.welcome_user_email(@user).deliver  
-        flash[:success] = "You were registered."
+        flash[:success] = "Thank you for registering with MyFlix!"
         redirect_to sessions_new_path
       else
         flash[:warning] = charge.error_message
         render :new
       end
-    else 
+    else
+      flash[:warning] = "There was a problem with your info. Please check the form below." 
       render :new 
     end
   end

@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe UsersController do
+  after do
+    ActionMailer::Base.deliveries.clear
+  end
+  
   describe "GET new" do
     it "sets the @user to a new User" do   
       get :new
@@ -30,7 +34,7 @@ describe UsersController do
 
       it "creates a notice if the user has been saved" do 
         post :create, user: Fabricate.attributes_for(:user)
-        expect(flash[:success]).to eq("You were registered.")
+        expect(flash[:success]).to eq("Thank you for registering with MyFlix!")
       end
 
       it "redirects to the login path if the user has been saved" do
@@ -67,11 +71,7 @@ describe UsersController do
       
       before do
         allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
-      end    
-
-      after do
-        ActionMailer::Base.deliveries.clear
-      end             
+      end                 
 
       it "sends to the right recipient with valid inputs" do
         post :create, user: {email: "bob@bob.com", password: "password", full_name: "bob bob"}  
@@ -86,7 +86,8 @@ describe UsersController do
       end
     end
 
-    context "invalid personal info" do
+    context "invalid personal info" do      
+      
       it "renders the new user template if validation fails" do
         post :create, user: {email: "bob@bob.com", password: ""}
         expect(User.count).to eq(0)

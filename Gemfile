@@ -50,6 +50,7 @@ group :test do
   gem 'webmock'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
+  gem 'poltergeist'
 end
 
 group :production do
