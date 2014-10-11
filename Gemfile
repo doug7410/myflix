@@ -39,13 +39,18 @@ group :development, :test do
   gem 'pry'
   gem 'spring-commands-rspec'
   gem 'guard-rspec'
+  gem 'childprocess'
 end
 
 group :test do
-  gem 'database_cleaner', '1.2.0'
   gem 'shoulda-matchers'
   gem 'capybara'
   gem 'capybara-email'
+  gem 'vcr'
+  gem 'webmock'
+  gem 'selenium-webdriver'
+  gem 'database_cleaner'
+  gem 'poltergeist'
 end
 
 group :production do

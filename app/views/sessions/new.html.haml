@@ -10,7 +10,7 @@
             = email_field_tag :email, params[:email] || '', class: "form-control", placeholder: "your@email.com"
         .row
           .form-group.col-sm-4        
-            = label_tag :password
+            = label_tag :password, "Password"
             = password_field_tag :password, params[:password] || '', class: "form-control", placeholder: "password"
         .row.form-group
           = submit_tag 'Sign In', class: 'btn'
