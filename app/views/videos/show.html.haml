@@ -7,12 +7,9 @@
         %header
           %h3 
             = @video.title
-          - if @video.reviews.any?  
-            %span Rating: #{@video.average_rating}/5.0
-          - else
-            %span Rating: N/A  
-        %p 
-          = @video.description
+          %span Rating:
+          = @video.rating  
+          %p= @video.description
         .actions
           %a.btn.btn-primary(href="#{@video.video_url}") Watch Now
           - if current_user.video_is_in_queue?(@video)
