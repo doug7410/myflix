@@ -7,6 +7,7 @@ feature 'a user logs in and invites a friend to join myflix' do
     invite_a_friend
     
     friend_acceptes_invitation
+    sleep 5 #this is to allow the database to keep up with browser redirects in poltergiest test driver
     friend_signs_in
     
     friend_should_follow(bob)      

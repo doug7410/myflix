@@ -21,6 +21,7 @@ gem 'carrierwave'
 gem 'mini_magick'
 gem 'fog'
 gem 'stripe'
+gem 'draper', '~> 1.3'
 
 
 group :development do
@@ -51,6 +52,7 @@ group :test do
   gem 'selenium-webdriver'
   gem 'database_cleaner'
   gem 'poltergeist'
+  gem 'phantomjs', require: 'phantomjs/poltergeist'
 end
 
 group :production do
