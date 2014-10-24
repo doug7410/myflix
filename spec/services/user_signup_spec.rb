@@ -8,10 +8,10 @@ describe UserSignup do
   describe "#sign_up" do
     context "valid personal info and valid card" do
 
-      let(:charge) { double(:charge, successful?: true)}
+      let(:customer) { double(:customer, successful?: true)}
 
       before do
-        expect(StripeWrapper::Charge).to receive(:create).and_return(charge)
+        expect(StripeWrapper::Customer).to receive(:create).and_return(customer)
       end
 
       it "creates the new user" do
@@ -57,8 +57,8 @@ describe UserSignup do
 
     context "valid personal info and declined card" do 
       it "does not create a new user record" do
-        charge = double(:charge, successful?: false, error_message: "Your card was declined")
-        expect(StripeWrapper::Charge).to receive(:create).and_return(charge)
+        customer = double(:customer, successful?: false, error_message: "Your card was declined")
+        expect(StripeWrapper::Customer).to receive(:create).and_return(customer)
 
         UserSignup.new(Fabricate.build(:user)).sign_up('123456', nil)
         expect(User.count).to eq (0)
