@@ -43,4 +43,5 @@ Myflix::Application.routes.draw do
 
 
   mount Sidekiq::Web, at: '/sidekiq'
+  mount StripeEvent::Engine, at: '/stripe_events'
 end
