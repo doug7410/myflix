@@ -14,7 +14,7 @@ describe "Create payment on successful charge"  do
           "created"=> 1414356656,
           "livemode"=> false,
           "paid"=> true,
-          "ammount_in_cents"=> 999,
+          "ammount"=> 999,
           "currency"=> "usd",
           "refunded"=> false,
           "card"=> {
