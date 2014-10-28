@@ -12,7 +12,8 @@ class UserSignup
         :user => @user,
         :card => stripe_token,
       )
-      if customer.successful? 
+      if customer.successful?
+        @user.customer_token = customer.customer_token 
         @user.save 
         handle_invitation(invitation_token)
         MyflixMailer.welcome_user_email(@user).deliver  

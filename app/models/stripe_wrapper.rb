@@ -25,7 +25,7 @@ module StripeWrapper
   end
 
   class Customer
-    attr_reader :response, :error_message
+    attr_reader :response, :error_message, :customer_token
 
     def initialize(options={})
       @response = options[:response]
@@ -43,6 +43,10 @@ module StripeWrapper
       rescue Stripe::CardError => e
         new(error_message: e.message)
       end
+    end
+
+    def customer_token
+      response.id
     end
 
     def successful?
