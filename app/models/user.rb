@@ -14,6 +14,9 @@ class User < ActiveRecord::Base
   validates :email, presence: :true, uniqueness: true
   validates :full_name, presence: :true
 
+  def deactivate!
+    update_column(:active, false)
+  end
 
   def follow(another_user)
     following_relationships.create(leader: another_user) if can_follow?(another_user)
