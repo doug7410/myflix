@@ -15,12 +15,12 @@ gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'slim'
 gem 'unicorn'
-gem 'sentry-raven'
 gem 'paratrooper'
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'fog'
 gem 'stripe'
+gem 'stripe_event'
 gem 'draper', '~> 1.3'
 
 
@@ -57,6 +57,7 @@ end
 
 group :production do
   gem 'pg'
+  gem 'sentry-raven'
   gem 'rails_12factor'
 end
 

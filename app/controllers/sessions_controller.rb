@@ -7,8 +7,13 @@ class SessionsController < ApplicationController
   def create
     @user = User.find_by(email: params[:email])
     
-    if @user && @user.authenticate(params[:password]) 
-      login_user!(@user)
+    if @user && @user.authenticate(params[:password])
+      if @user.active? 
+        login_user!(@user)
+      else
+        flash[:danger] = "Your account has been suspended, please contact customer service."
+        render :new
+      end
     else
       flash[:danger] = "Something was wrong with your username or password."
       render :new

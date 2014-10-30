@@ -31,11 +31,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Sun, 12 Oct 2014 21:36:38 GMT
+      - Fri, 24 Oct 2014 22:40:22 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
-      - '597'
+      - '624'
       Access-Control-Allow-Credentials:
       - 'true'
       Access-Control-Allow-Methods:
@@ -45,7 +45,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - 6044af1e-84c4-4a6d-a18f-a345b10f70d2
+      - 45b28fff-7acc-447a-b475-6d6f4104f457
       Stripe-Version:
       - '2014-09-08'
       Strict-Transport-Security:
@@ -54,14 +54,14 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "tok_14mu14AQtNZoyYMJtKC2RwbF",
+          "id": "tok_14rGjKAQtNZoyYMJaTi9zutM",
           "livemode": false,
-          "created": 1413149798,
+          "created": 1414190422,
           "used": false,
           "object": "token",
           "type": "card",
           "card": {
-            "id": "card_14mu14AQtNZoyYMJVdcCLsGV",
+            "id": "card_14rGjKAQtNZoyYMJ8KCg7LYt",
             "object": "card",
             "last4": "4242",
             "brand": "Visa",
@@ -77,17 +77,18 @@ http_interactions:
             "address_state": null,
             "address_zip": null,
             "address_country": null,
+            "dynamic_last4": null,
             "customer": null
           }
         }
     http_version: 
-  recorded_at: Sun, 12 Oct 2014 21:36:43 GMT
+  recorded_at: Fri, 24 Oct 2014 22:40:41 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/charges
     body:
       encoding: US-ASCII
-      string: amount=999&currency=usd&card=tok_14mu14AQtNZoyYMJtKC2RwbF&description=A%20valid%20charge
+      string: amount=999&currency=usd&card=tok_14rGjKAQtNZoyYMJaTi9zutM&description=A%20valid%20charge
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -113,11 +114,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Sun, 12 Oct 2014 21:36:39 GMT
+      - Fri, 24 Oct 2014 22:40:23 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
-      - '1257'
+      - '1284'
       Access-Control-Allow-Credentials:
       - 'true'
       Access-Control-Allow-Methods:
@@ -127,7 +128,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - 7bb2e06b-4f2e-4cc2-bc2f-93acafd02d4b
+      - 7b69bc70-9721-4b57-877f-adc9d941161e
       Stripe-Version:
       - '2014-09-08'
       Strict-Transport-Security:
@@ -136,16 +137,16 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "ch_14mu15AQtNZoyYMJpuUNvo0F",
+          "id": "ch_14rGjLAQtNZoyYMJFnhLrsUZ",
           "object": "charge",
-          "created": 1413149799,
+          "created": 1414190423,
           "livemode": false,
           "paid": true,
           "amount": 999,
           "currency": "usd",
           "refunded": false,
           "card": {
-            "id": "card_14mu14AQtNZoyYMJVdcCLsGV",
+            "id": "card_14rGjKAQtNZoyYMJ8KCg7LYt",
             "object": "card",
             "last4": "4242",
             "brand": "Visa",
@@ -164,6 +165,7 @@ http_interactions:
             "cvc_check": "pass",
             "address_line1_check": null,
             "address_zip_check": null,
+            "dynamic_last4": null,
             "customer": null
           },
           "captured": true,
@@ -171,10 +173,10 @@ http_interactions:
             "object": "list",
             "total_count": 0,
             "has_more": false,
-            "url": "/v1/charges/ch_14mu15AQtNZoyYMJpuUNvo0F/refunds",
+            "url": "/v1/charges/ch_14rGjLAQtNZoyYMJFnhLrsUZ/refunds",
             "data": []
           },
-          "balance_transaction": "txn_14mu15AQtNZoyYMJl2TAgaqC",
+          "balance_transaction": "txn_14rGjLAQtNZoyYMJUStRTELL",
           "failure_message": null,
           "failure_code": null,
           "amount_refunded": 0,
@@ -189,5 +191,5 @@ http_interactions:
           "shipping": null
         }
     http_version: 
-  recorded_at: Sun, 12 Oct 2014 21:36:44 GMT
+  recorded_at: Fri, 24 Oct 2014 22:40:42 GMT
 recorded_with: VCR 2.9.3
