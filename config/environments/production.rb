@@ -18,11 +18,7 @@ Myflix::Application.configure do
  
   config.active_support.deprecation = :notify
   
-  if Rails.env.staging?
-    config.action_mailer.default_url_options = { host: 'doug-myflix-staging.herokuapp.com'}
-  else
-    config.action_mailer.default_url_options = { host: 'myflix-doug.herokuapp.com'}
-  end
+  config.action_mailer.default_url_options = { host: 'myflix-doug.herokuapp.com'}
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
