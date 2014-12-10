@@ -14,4 +14,21 @@ class Admin::VideosController < AdminsController
       render :new
     end
   end
+
+  def show
+    @video = Video.find(params[:id])
+    render :show
+  end
+
+  def update
+    @video = Video.find(params[:id])
+    if @video.update(params.require(:video).permit!)
+      flash[:success] = 'The video has been updated.'
+      redirect_to admin_video_path(@video)
+    else
+      flash[:danger] = "please fix the errors below"
+      render :show
+    end
+  end
+
 end

@@ -19,15 +19,6 @@ ActiveRecord::Schema.define(version: 20141030025216) do
     t.datetime "updated_at"
   end
 
-  create_table "invitaions", force: true do |t|
-    t.integer  "user_id"
-    t.string   "friend_name"
-    t.string   "friend_email"
-    t.text     "message"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "invitations", force: true do |t|
     t.integer  "inviter_id"
     t.string   "recipient_name"
