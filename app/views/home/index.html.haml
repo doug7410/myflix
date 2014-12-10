@@ -7,3 +7,6 @@
         .video.col-sm-2 
           = link_to video_path(vid)  do
             %img(src="#{vid.small_cover_url}")
+          -if current_user.admin?
+            %p
+              =link_to 'Edit', admin_video_path(vid)   

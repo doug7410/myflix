@@ -7,7 +7,7 @@ require 'capybara/email/rspec'
 require 'sidekiq/testing'
 require 'vcr'
 require 'capybara/poltergeist'
-Capybara.javascript_driver = :poltergeist
+Capybara.javascript_driver = :selenium
 Capybara.server_port = 52662
 
 Capybara.register_driver :poltergeist do |app|

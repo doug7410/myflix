@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.stripe.com/v1/customers
     body:
       encoding: US-ASCII
-      string: card=tok_157ykEAQtNZoyYMJIfb8WuJH&email=bob%40bob.com&plan=base
+      string: email=bob%40bob.com&plan=base
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -22,20 +22,20 @@ http_interactions:
         doug-laptop 3.16.0-25-generic #33-Ubuntu SMP Tue Nov 4 12:06:54 UTC 2014 x86_64
         x86_64 x86_64 GNU/Linux"}'
       Content-Length:
-      - '63'
+      - '29'
   response:
     status:
-      code: 402
-      message: Payment Required
+      code: 400
+      message: Bad Request
     headers:
       Server:
       - nginx
       Date:
-      - Wed, 10 Dec 2014 00:54:23 GMT
+      - Wed, 10 Dec 2014 00:46:28 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
-      - '117'
+      - '110'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -47,7 +47,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_vdmnl8zlGxjttD5i
+      - req_N4vUEihbIYFeGehF
       Stripe-Version:
       - '2014-09-08'
     body:
@@ -55,11 +55,10 @@ http_interactions:
       string: |
         {
           "error": {
-            "message": "Your card was declined.",
-            "type": "card_error",
-            "code": "card_declined"
+            "type": "invalid_request_error",
+            "message": "This customer has no attached card"
           }
         }
     http_version: 
-  recorded_at: Wed, 10 Dec 2014 00:54:24 GMT
+  recorded_at: Wed, 10 Dec 2014 00:46:29 GMT
 recorded_with: VCR 2.9.3

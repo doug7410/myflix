@@ -80,4 +80,80 @@ describe Admin::VideosController do
       end
     end
   end 
+
+  describe "GET show" do
+    let(:south_park) { Fabricate(:video) }
+
+    it_behaves_like "require log in" do
+      let(:action) {get :show, id: south_park.id}
+    end
+
+    it_behaves_like "requires admin" do
+      let(:action) {get :show, id: south_park.id}
+    end
+
+    it "renders the show template" do
+      set_current_admin
+      get :show, id: south_park.id
+      expect(response).to render_template :show
+    end
+
+    it "sets the @video" do
+      set_current_admin
+      get :show, id: south_park.id
+      expect(assigns(:video)).to eq(south_park)
+    end 
+
+  end
+
+  describe "PATCH update" do
+    let(:south_park) { Fabricate(:video) }
+
+    it_behaves_like "require log in" do
+      let(:action) {patch :update, id: south_park.id}
+    end
+
+    it_behaves_like "requires admin" do
+      let(:action) {patch :update, id: south_park.id}
+    end
+
+    context "with valid input" do
+      it "redirects to the video show page" do
+        set_current_admin
+        patch :update, id: south_park.id, video: Fabricate.attributes_for(:video)
+        expect(response).to redirect_to admin_video_path(south_park)
+      end
+
+      it "sets the flash success message" do
+        set_current_admin
+        patch :update, id: south_park.id, video: Fabricate.attributes_for(:video)
+        expect(flash[:success]).to be_present
+      end
+      it "updates the video" do
+        set_current_admin
+        patch :update, id: south_park.id, video: {title: "Futurama", description: south_park.description}
+        expect(flash[:success]).to be_present
+      end
+    end
+
+    context "with invalid input" do
+      it "sets the @video" do
+        set_current_admin
+        patch :update, id: south_park.id, video: {title: "", description: south_park.description}
+        expect(assigns(:video)).to eq(south_park)
+      end
+
+      it "sets the flash error message" do
+        set_current_admin
+        patch :update, id: south_park.id, video: {title: "", description: south_park.description}
+        expect(flash[:danger]).to be_present
+      end
+
+      it "renders the show template" do
+        set_current_admin
+        patch :update, id: south_park.id, video: {title: "", description: south_park.description}
+        expect(response).to render_template :show
+      end  
+    end
+  end
 end

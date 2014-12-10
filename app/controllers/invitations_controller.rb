@@ -3,7 +3,6 @@ class InvitationsController < ApplicationController
 
   def new
     @invitation = Invitation.new
-    # binding.pry
   end 
 
   def create
