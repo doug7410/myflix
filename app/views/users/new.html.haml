@@ -20,15 +20,18 @@
           .form-group
             = label_tag :credit_card_number, "Credit Card Number", class: "control-label col-sm-2"
             .col-sm-6
-              = text_field_tag :credit_card_number, nil, data: { :stripe => "number"}, class: "form-control"
+              = text_field_tag :credit_card_number, nil, data: { :stripe => "number"}, class: "form-control" 
+              %p.help-block For this demo use (4242 4242 4242 4242) with no spaces.
           .form-group
             = label_tag :security_code, "Security Code", class: "control-label col-sm-2"
             .col-sm-6
               = text_field_tag :security_code, nil, data: { :stripe => "cvc"}, class: "form-control"
+              %p.help-block use (123)
           .form-group
             %label.control-label.col-sm-2 Expiration
             .col-sm-3
               = select_month(Date.today, {add_month_numbers: true},  class: 'form-control', data: {stripe: "exp-month"})
+              %p.help-block (use any future month and year)
             .col-sm-2
               = select_year(Date.today.year, {start_year: Date.today.year, end_year: Date.today.year + 4}, class: 'form-control', data: {stripe: "exp-year"})
         %fieldset.actions.control-group.col-sm-offset-2
